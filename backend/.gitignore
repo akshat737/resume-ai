@@ -1,0 +1,21 @@
+# --- Ignore environment and secret files ---
+.env
+*.env
+
+# --- Ignore Python build and cache files ---
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+
+# --- Ignore virtual environments ---
+venv/
+env/
+
+# --- Ignore system files ---
+.DS_Store
+Thumbs.db
+
+# --- Ignore VS Code settings (optional but safe) ---
+.vscode/

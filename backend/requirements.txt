@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+langchain
+langchain-community
+langchain-core
+sentence-transformers
+huggingface-hub
+scikit-learn
+numpy
+python-dotenv
+python-multipart

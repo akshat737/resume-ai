@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resume AI</title>
+  <style>
+    body { font-family: Arial; background: #f9fafb; color: #333; margin: 2rem auto; max-width: 700px; }
+    textarea, input { width: 100%; margin: 8px 0; padding: 10px; border-radius: 8px; border: 1px solid #ccc; }
+    button { background: #2563eb; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; }
+    button:hover { background: #1d4ed8; }
+    .result { background: white; border-radius: 8px; padding: 10px; margin-top: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+  </style>
+</head>
+<body>
+  <h1>✨ Resume AI Builder</h1>
+
+  <input id="user_id" placeholder="Enter your name or email" />
+  <textarea id="resume_text" rows="8" placeholder="Paste your resume here..."></textarea>
+  <button onclick="uploadResume()">Upload Resume</button>
+
+  <textarea id="job_desc" rows="6" placeholder="Paste the job description here..."></textarea>
+  <button onclick="generate()">Generate Tailored Resume & Cover Letter</button>
+
+  <div id="output" class="result"></div>
+
+  <script>
+    const API_BASE = "https://resume-ai.onrender.com"; // change after deploying
+
+    async function uploadResume() {
+      const form = new FormData();
+      form.append("user_id", document.getElementById("user_id").value);
+      form.append("resume_text", document.getElementById("resume_text").value);
+
+      const res = await fetch(`${API_BASE}/upload_resume`, { method: "POST", body: form });
+      const data = await res.json();
+      document.getElementById("output").innerText = JSON.stringify(data, null, 2);
+    }
+
+    async function generate() {
+      const form = new FormData();
+      form.append("user_id", document.getElementById("user_id").value);
+      form.append("job_description", document.getElementById("job_desc").value);
+
+      const res = await fetch(`${API_BASE}/generate`, { method: "POST", body: form });
+      const data = await res.json();
+
+      if (data.error) {
+        document.getElementById("output").innerHTML = `<b style='color:red'>${data.error}</b>`;
+        return;
+      }
+
+      document.getElementById("output").innerHTML = `
+        <h3>Tailored Resume</h3><pre>${data.tailored_resume}</pre>
+        <h3>Cover Letter</h3><pre>${data.cover_letter}</pre>
+      `;
+    }
+  </script>
+</body>
+</html>
