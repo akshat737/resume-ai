@@ -11,7 +11,7 @@ app = FastAPI(title="Resume AI")
 # Allow frontend (Vercel) to call backend (Render)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # you can restrict this later
+    allow_origins=["*"],  # You can restrict this to your Vercel domain later
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -41,9 +41,15 @@ async def generate(user_id: str = Form(...), job_description: str = Form(...)):
     idxs = np.argsort(sims)[::-1][:5]
     top_ctx = "\n\n".join([user_data[i][0] for i in idxs])
 
-    chain = build_resume_chain(user_id)
-    output = chain.invoke({"job_description": job_description, "resume_context": top_ctx})
+    # 👇 FIXED: call build_resume_chain() with no user_id (LangChain doesn't need it)
+    chain = build_resume_chain()
+    output = chain.invoke({
+        "job_description": job_description,
+        "resume_context": top_ctx
+    })
 
+    if isinstance(output, dict) and "text" in output:
+        output = output["text"]
 
     if "===COVER_LETTER===" in output:
         resume, cover = output.split("===COVER_LETTER===", 1)
