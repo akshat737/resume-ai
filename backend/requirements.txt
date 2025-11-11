@@ -6,3 +6,4 @@ huggingface-hub>=0.24.0
 python-multipart
 scikit-learn
 numpy
+sentence-transformers>=2.2.2
