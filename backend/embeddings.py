@@ -2,7 +2,7 @@ import os, requests, numpy as np
 
 HF_API_KEY = os.getenv("HF_API_KEY")
 EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
-HF_URL = f"https://api-inference.huggingface.co/pipeline/feature-extraction/{EMBEDDING_MODEL}"
+HF_URL = f"https://api-inference.huggingface.co/models/{EMBEDDING_MODEL}"
 headers = {"Authorization": f"Bearer {HF_API_KEY}"}
 
 def embed_texts(texts):
